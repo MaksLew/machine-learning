@@ -1,6 +1,6 @@
 import mlflow
 from mlproject.tracking import setup
-from data import load_frame, split_data
+from data import load_frame, split_data # ty: ignore
 
 setup("w01-mlflow-basics")
 
@@ -15,7 +15,7 @@ with mlflow.start_run(run_name="basics") as run:
         "split.json",
     )
 
-    train_dataset = mlflow.data.from_pandas(
+    train_dataset = mlflow.data.from_pandas( # ty: ignore
         train_data, name="california-train", targets="MedHouseVal"
     )
     mlflow.log_input(train_dataset, context="training")
