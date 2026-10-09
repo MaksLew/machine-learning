@@ -23,7 +23,7 @@ services:
     restart: unless-stopped
 
   minio:
-    image: quay.io/minio/minio:RELEASE.2025-09-07T16-13-09Z
+    image: minio/minio:latest
     command: server /data --console-address ":9001"
     user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"
     environment:
@@ -38,7 +38,7 @@ services:
 
   # One-off job: creates the artifact bucket, then exits.
   minio-init:
-    image: quay.io/minio/mc:RELEASE.2025-08-13T08-35-41Z
+    image: minio/minio:latest
     depends_on:
       - minio
     environment:
