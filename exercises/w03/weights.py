@@ -57,5 +57,4 @@ def choose_alpha(search: pd.DataFrame) -> float:
     search: a DataFrame with the columns alpha and val_mse (as returned by search_alpha).
     Returns the alpha as a float.
     """
-    # TODO (Z3)
-    raise NotImplementedError
+    return float(search.loc[search["val_mse"].idxmin(), "alpha"])
