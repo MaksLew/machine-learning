@@ -23,12 +23,24 @@ class MLP(nn.Module):
 
     def __init__(self, in_features, n_classes, hidden=(256,), activation=nn.ReLU):
         super().__init__()
-        # TODO (Z1)
-        raise NotImplementedError("Z1: MLP.__init__")
+        self.net = nn.Sequential(
+            nn.Flatten(),
+        )
+
+        previous_width = in_features
+
+        if len(hidden) > 0:
+            for i, width in enumerate(hidden):
+                self.net.add_module(f"hidden_{i}", nn.Linear(previous_width, width))
+                if activation is not None:
+                    self.net.add_module(f"activation_{i}", activation())
+                previous_width = width
+
+        self.net.add_module("output", nn.Linear(previous_width, n_classes))
 
     def forward(self, x):
         # TODO (Z1)
-        raise NotImplementedError("Z1: MLP.forward")
+        return self.net(x)
 
 
 def count_parameters(model):
