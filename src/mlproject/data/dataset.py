@@ -27,10 +27,15 @@ class ImageDataset(Dataset):
 
     def __len__(self):
         # TODO (W6)
-        raise NotImplementedError("W6: ImageDataset.__len__")
+        return len(self.items)
 
     def __getitem__(self, idx):
         """Returns (image, label). Open the file with PIL, convert it to RGB (some archives contain
         grayscale or RGBA images), close the file, then apply self.transform if it is set."""
         # TODO (W6)
-        raise NotImplementedError("W6: ImageDataset.__getitem__")
+        path, label = self.items[idx]
+        image = Image.open(path).convert("RGB")
+        if self.transform is not None:
+            image = self.transform(image)
+
+        return image, label
