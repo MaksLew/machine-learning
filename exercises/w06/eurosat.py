@@ -118,3 +118,18 @@ with mlflow.start_run(run_name=f"eurosat_{time.strftime("%Y%m%d-%H%M%S")}"):
     mlflow.log_param("lr", LR)
     mlflow.log_param("batch_size", BATCH_SIZE)
     mlflow.log_param("epochs", EPOCHS)
+
+    model.eval()
+    correct_shift16 = correct_rot90 = total = 0
+    with torch.no_grad():
+        for x, y in val_loader:
+            shifted = torch.roll(x, (16, 16), dims=(2, 3))
+            rotated = torch.rot90(x, 1, dims=(2, 3))
+            correct_shift16 += (model(shifted).argmax(dim=1) == y).sum().item()
+            correct_rot90 += (model(rotated).argmax(dim=1) == y).sum().item()
+            total += len(y)
+
+    mlflow.log_metrics({
+        "val_accuracy_shift16": correct_shift16 / total,
+        "val_accuracy_rot90": correct_rot90 / total,
+    })
