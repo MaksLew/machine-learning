@@ -16,6 +16,7 @@ from mlproject.data.dataset import ImageDataset, read_split
 from mlproject.evaluation.classification import confusion, confusion_figure, predict
 from mlproject.tracking import setup
 from mlproject.models.mlp import MLP
+from mlproject.models.cnn import SimpleCNN
 from mlproject.training.trainer import evaluate, train_one_epoch
 
 torch.manual_seed(42)
@@ -65,7 +66,7 @@ with mlflow.start_run(run_name=f"eurosat_{time.strftime("%Y%m%d-%H%M%S")}"):
     if args.model == "mlp":
         model = MLP(3 * 64 * 64, 10, hidden=(256,))
     else:
-        ...
+        model = SimpleCNN(10, 64)
     loss_fn = LOSS_FN()
     optimizer = OPTIMIZER(params=model.parameters(), lr=LR)
 
